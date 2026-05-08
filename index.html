@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
 <title>ICE Board — Sempai SEO/CM</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -395,7 +396,7 @@ function hideBanner() {
 // ─── SHEETS API ───────────────────────────────────────────────
 async function sheetsGetIdeas() {
   try {
-    const r = await fetch(APPS_SCRIPT_URL + '?action=getIdeas');
+    const r = await fetch(APPS_SCRIPT_URL + '?action=getIdeas', {redirect:'follow'});
     if (!r.ok) return null;
     const d = await r.json();
     return Array.isArray(d.ideas) ? d.ideas : null;
@@ -404,30 +405,26 @@ async function sheetsGetIdeas() {
 
 async function sheetsAddIdea(idea) {
   try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain'},
-      body: JSON.stringify({action:'addIdea', idea})
-    });
+    const data = encodeURIComponent(JSON.stringify(idea));
+    await fetch(APPS_SCRIPT_URL + '?action=addIdea&data=' + data, {redirect:'follow'});
   } catch(e) {}
 }
 
 async function sheetsAddVote(idea, scores) {
   try {
     const avg = getAvgScores(idea);
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'text/plain'},
-      body: JSON.stringify({
-        action:    'addVote',
-        ideaId:    idea.id,
-        ideaTitle: idea.title,
-        ideaArea:  idea.area,
-        ideaType:  idea.type,
-        scores,
-        newAvg: avg ? {impact:avg.impact, confidence:avg.confidence, ease:avg.ease, it:avg.it, total:avg.total, voters:avg.voters} : null
-      })
-    });
+    const voterKey = currentUser ? btoa(currentUser.email).replace(/=/g,'') : 'anon';
+    const payload = {
+      ideaId:    idea.id,
+      ideaTitle: idea.title,
+      ideaArea:  idea.area,
+      ideaType:  idea.type,
+      scores,
+      voterKey,
+      newAvg: avg ? {impact:avg.impact, confidence:avg.confidence, ease:avg.ease, it:avg.it, total:avg.total, voters:avg.voters} : null
+    };
+    const data = encodeURIComponent(JSON.stringify(payload));
+    await fetch(APPS_SCRIPT_URL + '?action=addVote&data=' + data, {redirect:'follow'});
   } catch(e) {}
 }
 
