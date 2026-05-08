@@ -427,7 +427,7 @@ async function sheetsAddIdea(idea) {
 async function sheetsAddVote(idea, scores) {
   try {
     const avg      = getAvgScores(idea);
-    const voterKey = currentUser ? btoa(unescape(encodeURIComponent(currentUser.email))).replace(/=/g,'') : 'anon';
+    const voterKey = getVoterKey() || 'anon';
     const payload  = {
       ideaId:    idea.id,
       ideaTitle: idea.title,
@@ -499,8 +499,16 @@ function renderIdeas() {
   list.innerHTML = filtered.map(ideaCardHtml).join('');
 }
 
+function getVoterKey() {
+  if (!currentUser) return null;
+  return btoa(unescape(encodeURIComponent(currentUser.email))).replace(/=/g,'');
+}
+
 function hasVoted(idea) {
-  return currentUser && idea.votes && idea.votes[currentUser.email];
+  if (!currentUser || !idea.votes) return false;
+  const vk = getVoterKey();
+  // sprawdź po voterKey (base64 emaila) lub po emailu bezpośrednio
+  return !!(idea.votes[vk] || idea.votes[currentUser.email]);
 }
 
 function ideaCardHtml(idea) {
@@ -579,7 +587,7 @@ async function submitVote(ideaId) {
   const idea = ideas.find(i => i.id === ideaId);
   if (!idea) return;
   if (!idea.votes) idea.votes = {};
-  idea.votes[currentUser.email] = {...scores};
+  idea.votes[getVoterKey()] = {...scores};
   showBanner('Zapisywanie oceny...', 'info');
   await sheetsAddVote(idea, scores);
   hideBanner();
