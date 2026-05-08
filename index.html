@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="robots" content="noindex, nofollow"/>
+<meta name="googlebot" content="noindex, nofollow"/>
 <title>ICE Board — Sempai SEO/CM</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -315,7 +316,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 
 <script>
 // ─── KONFIGURACJA ─────────────────────────────────────────────
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/sempai.pl/s/AKfycby1hY2lAnTE23npTI32MC6c11N5Pc58eVD-QYqlPU__mdUwPbS9foyAq5uwVJ_McZPK/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6NdoWtnPAZqHPttb4IL0FWAEViVR1dkEUxz1ayPaEjAM6iqc_0Y3BCP-WIDs61thc/exec';
 const ALLOWED_DOMAIN  = 'sempai.pl';
 const CLIENT_ID       = '372087545319-61b24o60no3jpmui9kkrfv05pvv1k7hr.apps.googleusercontent.com';
 // ─────────────────────────────────────────────────────────────
@@ -394,27 +395,40 @@ function hideBanner() {
 }
 
 // ─── SHEETS API ───────────────────────────────────────────────
+async function apiCall(params) {
+  const qs  = Object.entries(params).map(([k,v]) =>
+    k + '=' + encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : v)
+  ).join('&');
+  const url = APPS_SCRIPT_URL + '?' + qs;
+  const r   = await fetch(url);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
 async function sheetsGetIdeas() {
   try {
-    const r = await fetch(APPS_SCRIPT_URL + '?action=getIdeas', {redirect:'follow'});
-    if (!r.ok) return null;
-    const d = await r.json();
+    const d = await apiCall({action:'getIdeas'});
     return Array.isArray(d.ideas) ? d.ideas : null;
-  } catch(e) { return null; }
+  } catch(e) {
+    console.warn('sheetsGetIdeas failed:', e.message);
+    return null;
+  }
 }
 
 async function sheetsAddIdea(idea) {
   try {
-    const data = encodeURIComponent(JSON.stringify(idea));
-    await fetch(APPS_SCRIPT_URL + '?action=addIdea&data=' + data, {redirect:'follow'});
-  } catch(e) {}
+    const res = await apiCall({action:'addIdea', data: idea});
+    console.log('addIdea:', res);
+  } catch(e) {
+    console.warn('sheetsAddIdea failed:', e.message);
+  }
 }
 
 async function sheetsAddVote(idea, scores) {
   try {
-    const avg = getAvgScores(idea);
-    const voterKey = currentUser ? btoa(currentUser.email).replace(/=/g,'') : 'anon';
-    const payload = {
+    const avg      = getAvgScores(idea);
+    const voterKey = currentUser ? btoa(unescape(encodeURIComponent(currentUser.email))).replace(/=/g,'') : 'anon';
+    const payload  = {
       ideaId:    idea.id,
       ideaTitle: idea.title,
       ideaArea:  idea.area,
@@ -423,9 +437,11 @@ async function sheetsAddVote(idea, scores) {
       voterKey,
       newAvg: avg ? {impact:avg.impact, confidence:avg.confidence, ease:avg.ease, it:avg.it, total:avg.total, voters:avg.voters} : null
     };
-    const data = encodeURIComponent(JSON.stringify(payload));
-    await fetch(APPS_SCRIPT_URL + '?action=addVote&data=' + data, {redirect:'follow'});
-  } catch(e) {}
+    const res = await apiCall({action:'addVote', data: payload});
+    console.log('addVote:', res);
+  } catch(e) {
+    console.warn('sheetsAddVote failed:', e.message);
+  }
 }
 
 // ─── INIT & LOAD ──────────────────────────────────────────────
