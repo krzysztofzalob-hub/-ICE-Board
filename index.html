@@ -4,22 +4,31 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ICE Board — Sempai SEO/CM</title>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --dark:#151b3a;
-  --green:#3da546;
-  --green2:#41ad49;
-  --muted:#607086;
-  --border:#cfd4db;
-  --white:#ffffff;
-  --bg:#f5f6f8;
-  --surface:#ffffff;
-  --font:Arial,sans-serif;
+  --dark:#151b3a;--green:#3da546;--green2:#41ad49;
+  --muted:#607086;--border:#cfd4db;--white:#ffffff;
+  --bg:#f5f6f8;--surface:#ffffff;--font:Arial,sans-serif;
 }
 body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;}
 
-/* HEADER */
+/* LOGIN SCREEN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);}
+.login-box{background:var(--white);border-radius:8px;padding:48px 40px;text-align:center;max-width:400px;width:90%;}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:32px;}
+.login-logo-mark{width:40px;height:40px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.login-logo-mark svg{width:22px;height:22px;}
+.login-title{font-size:20px;font-weight:700;color:var(--dark);}
+.login-sub{font-size:12px;color:var(--green);margin-top:2px;}
+.login-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:28px;}
+.login-error{background:#ffeaea;color:#c0392b;font-size:13px;font-weight:700;padding:10px 16px;border-radius:4px;margin-top:16px;display:none;}
+.g-signin-wrap{display:flex;justify-content:center;margin-bottom:8px;}
+.login-hint{font-size:11px;color:var(--muted);margin-top:12px;}
+
+/* APP */
+#app-screen{display:none;}
 .header{background:var(--dark);padding:20px 0 0;}
 .header-inner{max-width:800px;margin:0 auto;padding:0 24px;}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
@@ -28,18 +37,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .logo-mark svg{width:18px;height:18px;}
 .logo-text{font-size:16px;font-weight:700;color:var(--white);letter-spacing:0.5px;}
 .logo-sub{font-size:11px;color:var(--green);font-weight:400;margin-top:1px;}
-.header-right{font-size:12px;color:rgba(255,255,255,0.45);}
+.user-bar{display:flex;align-items:center;gap:10px;}
+.user-name{font-size:12px;color:rgba(255,255,255,0.7);}
+.user-avatar{width:28px;height:28px;border-radius:50%;border:2px solid var(--green);}
+.logout-btn{font-size:11px;color:rgba(255,255,255,0.4);background:transparent;border:1px solid rgba(255,255,255,0.15);padding:3px 10px;border-radius:4px;cursor:pointer;font-family:var(--font);}
+.logout-btn:hover{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.3);}
 .tabs{display:flex;gap:0;}
-.tab{padding:12px 20px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.15s;letter-spacing:0.3px;white-space:nowrap;}
+.tab{padding:12px 20px;font-size:13px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.15s;white-space:nowrap;}
 .tab:hover{color:rgba(255,255,255,0.8);}
 .tab.active{color:var(--white);border-bottom-color:var(--green);}
 
-/* LAYOUT */
 .app{max-width:800px;margin:0 auto;padding:28px 24px;}
-.view{display:none;}
-.view.active{display:block;}
+.view{display:none;}.view.active{display:block;}
 
-/* FORMS */
 .form-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:20px;}
 .form-card-header{background:var(--dark);padding:14px 20px;}
 .form-card-header h3{font-size:14px;font-weight:700;color:var(--white);}
@@ -55,12 +65,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .btn-sm{background:transparent;border:1px solid var(--border);padding:6px 14px;border-radius:4px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:var(--font);}
 .btn-sm:hover{border-color:var(--green);color:var(--green);}
 
-/* FILTER */
 .filter-row{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
 .filter-chip{font-size:11px;padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-weight:700;transition:all 0.15s;}
 .filter-chip.active{background:var(--dark);color:var(--white);border-color:var(--dark);}
 
-/* IDEA CARDS */
 .idea-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;overflow:hidden;transition:border-color 0.15s;}
 .idea-card:hover{border-color:#a0aab4;}
 .idea-card-header{padding:14px 18px 0;}
@@ -71,6 +79,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .tag-area{background:#e8f5e9;color:#2d6a4f;}
 .tag-type{background:#eef0f4;color:var(--muted);}
 .tag-by{border:1px solid var(--border);color:var(--muted);background:transparent;}
+.tag-voted{background:#e8f5e9;color:#2d6a4f;border:1px solid #a8d5b0;}
 
 .scores-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);}
 .score-cell{background:var(--surface);padding:12px 8px;text-align:center;}
@@ -84,24 +93,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .score-voters{font-size:11px;color:rgba(255,255,255,0.4);}
 .no-scores{padding:12px 18px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);background:#fafbfc;}
 
-/* VOTE FORM */
 .vote-section{padding:14px 18px;border-top:1px solid var(--border);background:#fafbfc;}
 .vote-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:12px;}
 .vote-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .vote-dim{font-size:12px;color:var(--dark);font-weight:700;width:100px;flex-shrink:0;}
-.vote-hint{font-size:10px;color:var(--muted);width:100px;flex-shrink:0;margin-top:-6px;margin-bottom:6px;}
 .stars-row{display:flex;gap:3px;}
 .star-btn{width:28px;height:28px;border-radius:4px;border:1px solid var(--border);background:var(--white);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--font);font-weight:700;transition:all 0.1s;}
 .star-btn:hover{border-color:var(--green);color:var(--green);}
 .star-btn.sel{background:var(--dark);border-color:var(--dark);color:var(--white);}
 .star-btn.sel-it{background:#c0392b;border-color:#c0392b;color:var(--white);}
 .vote-actions{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-.voter-inp{padding:7px 11px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);color:var(--dark);background:var(--white);width:150px;outline:none;}
-.voter-inp:focus{border-color:var(--green);}
+.already-voted{font-size:12px;color:var(--green);font-weight:700;padding:10px 0;}
 
-/* RANKING */
 .rank-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px;margin-bottom:10px;display:grid;grid-template-columns:48px 1fr auto;gap:14px;align-items:center;}
-.rank-num{font-size:26px;font-weight:700;color:var(--border);text-align:center;font-family:var(--font);}
+.rank-num{font-size:26px;font-weight:700;color:var(--border);text-align:center;}
 .rank-num.podium{color:var(--green);}
 .rank-title{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px;}
 .rank-sub{font-size:12px;color:var(--muted);}
@@ -112,7 +117,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .bar-fill{height:100%;background:var(--green);border-radius:2px;transition:width 0.5s ease;}
 .rank-unscored{opacity:0.45;}
 
-/* GUIDE VIEW */
 .guide-section{margin-bottom:32px;}
 .guide-section h2{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:6px;padding-bottom:8px;border-bottom:2px solid var(--green);}
 .guide-section p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;}
@@ -125,21 +129,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .dim-card-body p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px;}
 .scale-row{display:flex;gap:4px;flex-wrap:wrap;}
 .scale-item{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;}
-.s1{background:#ffeaea;color:#c0392b;}
-.s2{background:#fff3e0;color:#e67e22;}
-.s3{background:#fef9c3;color:#b8860b;}
-.s4{background:#e8f5e9;color:#2d6a4f;}
-.s5{background:#d4edda;color:#155724;}
+.s1{background:#ffeaea;color:#c0392b;}.s3{background:#fef9c3;color:#b8860b;}.s5{background:#d4edda;color:#155724;}
 .formula-box{background:var(--dark);border-radius:6px;padding:20px 24px;margin:20px 0;text-align:center;}
-.formula-box .formula{font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:0.5px;}
+.formula-box .formula{font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;}
 .formula-box .formula span{color:var(--green);}
 .formula-box p{font-size:12px;color:rgba(255,255,255,0.5);}
 .example-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
-.example-table th{background:var(--dark);color:var(--white);padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;font-weight:700;}
+.example-table th{background:var(--dark);color:var(--white);padding:9px 12px;text-align:left;font-size:11px;text-transform:uppercase;font-weight:700;}
 .example-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--dark);}
 .example-table tr:nth-child(even) td{background:#fafbfc;}
-.example-table .score-green{color:var(--green);font-weight:700;}
-.example-table .score-red{color:#c0392b;font-weight:700;}
+.score-green{color:var(--green);font-weight:700;}.score-red{color:#c0392b;font-weight:700;}
 .tip-box{background:#e8f5e9;border-left:3px solid var(--green);border-radius:0 4px 4px 0;padding:12px 16px;margin-bottom:12px;}
 .tip-box p{font-size:13px;color:#2d6a4f;line-height:1.6;margin:0;}
 .tip-box strong{font-weight:700;}
@@ -149,7 +148,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 .step h4{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;}
 .step p{font-size:12px;color:var(--muted);line-height:1.6;}
 
-/* MISC */
 .empty-state{text-align:center;padding:48px 20px;color:var(--muted);font-size:13px;}
 .loading{text-align:center;padding:32px;color:var(--muted);font-size:13px;}
 .section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin:20px 0 10px;}
@@ -159,209 +157,155 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
   .row2{grid-template-columns:1fr;}
   .scores-grid{grid-template-columns:repeat(2,1fr);}
   .rank-card{grid-template-columns:36px 1fr auto;}
+  .tab{padding:10px 12px;font-size:12px;}
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <div class="header-top">
-      <div class="logo">
-        <div class="logo-mark">
-          <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="6" height="6" rx="1" fill="white"/>
-            <rect x="10" y="2" width="6" height="6" rx="1" fill="white" opacity="0.5"/>
-            <rect x="2" y="10" width="6" height="6" rx="1" fill="white" opacity="0.5"/>
-            <rect x="10" y="10" width="6" height="6" rx="1" fill="white"/>
-          </svg>
-        </div>
-        <div>
-          <div class="logo-text">Sempai ICE Board</div>
-          <div class="logo-sub">SEO / Content Management</div>
-        </div>
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">
+        <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" fill="white"/><rect x="10" y="2" width="6" height="6" rx="1" fill="white" opacity="0.5"/><rect x="2" y="10" width="6" height="6" rx="1" fill="white" opacity="0.5"/><rect x="10" y="10" width="6" height="6" rx="1" fill="white"/></svg>
       </div>
-      <div class="header-right" id="last-updated"></div>
+      <div>
+        <div class="login-title">Sempai ICE Board</div>
+        <div class="login-sub">SEO / Content Management</div>
+      </div>
     </div>
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('ideas')">Pomysły</div>
-      <div class="tab" onclick="switchTab('add')">+ Dodaj pomysł</div>
-      <div class="tab" onclick="switchTab('ranking')">Ranking</div>
-      <div class="tab" onclick="switchTab('guide')">Jak to działa?</div>
+    <p class="login-desc">Narzędzie do priorytetyzacji skilli dla zespołu Sempai. Zaloguj się kontem firmowym żeby dodawać pomysły i oceniać.</p>
+    <div class="g-signin-wrap">
+      <div id="g_id_onload"
+        data-client_id="372087545319-61b24o60no3jpmui9kkrfv05pvv1k7hr.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+      </div>
     </div>
+    <div class="login-error" id="login-error">Dostęp tylko dla kont @sempai.pl</div>
+    <div class="login-hint">Tylko konta @sempai.pl mają dostęp</div>
   </div>
 </div>
 
-<div class="app">
-
-  <!-- POMYSŁY -->
-  <div id="view-ideas" class="view active">
-    <div class="filter-row" id="filter-row"></div>
-    <div id="ideas-list"><div class="loading">Ładowanie pomysłów...</div></div>
-  </div>
-
-  <!-- DODAJ -->
-  <div id="view-add" class="view">
-    <div id="add-success" style="display:none;" class="success-msg">Pomysł dodany! Przejdź do zakładki Pomysły i oceń go.</div>
-    <div class="form-card">
-      <div class="form-card-header"><h3>Nowy pomysł na skill / automatyzację</h3></div>
-      <div class="form-card-body">
-        <div class="field"><label>Twoje imię *</label><input id="f-author" placeholder="np. Kasia"/></div>
-        <div class="field"><label>Nazwa skilla / pomysłu *</label><input id="f-title" placeholder="np. Content pruning — typowanie URL do usunięcia"/></div>
-        <div class="field"><label>Opis — co robi, jaki problem rozwiązuje</label><textarea id="f-desc" placeholder="Wklejasz listę URLi z danymi → skill klasyfikuje keep / prune / merge..."></textarea></div>
-        <div class="row2">
-          <div class="field"><label>Obszar</label>
-            <select id="f-area">
-              <option>Sprzedaż i wyceny</option>
-              <option>Raportowanie</option>
-              <option>Keyword research</option>
-              <option>On-page i treści</option>
-              <option>Audyt techniczny</option>
-              <option>Linkbuilding</option>
-              <option>Inne</option>
-            </select>
+<!-- APP SCREEN -->
+<div id="app-screen">
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="logo">
+          <div class="logo-mark">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="6" height="6" rx="1" fill="white"/><rect x="10" y="2" width="6" height="6" rx="1" fill="white" opacity="0.5"/><rect x="2" y="10" width="6" height="6" rx="1" fill="white" opacity="0.5"/><rect x="10" y="10" width="6" height="6" rx="1" fill="white"/></svg>
           </div>
-          <div class="field"><label>Typ wdrożenia</label>
-            <select id="f-type">
-              <option>Skill Claude</option>
-              <option>Skrypt + Claude</option>
-              <option>Integracja API</option>
-              <option>Narzędzie zewnętrzne</option>
-            </select>
+          <div>
+            <div class="logo-text">Sempai ICE Board</div>
+            <div class="logo-sub">SEO / Content Management</div>
           </div>
         </div>
-        <button class="btn-primary" onclick="addIdea()">Dodaj pomysł</button>
+        <div class="user-bar">
+          <span class="user-name" id="user-name-display"></span>
+          <img class="user-avatar" id="user-avatar" src="" alt="" style="display:none"/>
+          <button class="logout-btn" onclick="logout()">Wyloguj</button>
+        </div>
+      </div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('ideas')">Pomysły</div>
+        <div class="tab" onclick="switchTab('add')">+ Dodaj pomysł</div>
+        <div class="tab" onclick="switchTab('ranking')">Ranking</div>
+        <div class="tab" onclick="switchTab('guide')">Jak to działa?</div>
       </div>
     </div>
   </div>
 
-  <!-- RANKING -->
-  <div id="view-ranking" class="view">
-    <div id="ranking-list"><div class="loading">Ładowanie rankingu...</div></div>
-  </div>
+  <div class="app">
 
-  <!-- JAK TO DZIAŁA -->
-  <div id="view-guide" class="view">
-
-    <div class="guide-section">
-      <h2>Co to jest ICE scoring?</h2>
-      <p>ICE to prosty framework do priorytetyzacji pomysłów. Zamiast decydować "co robimy" na podstawie przeczucia lub głośności osoby w pokoju — każdy ocenia każdy pomysł w trzech wymiarach. Wyniki agregują się w ranking, który służy jako punkt wyjścia do miesięcznej dyskusji.</p>
-      <p>Dodajemy czwarty wymiar — <strong>IT Dependency</strong> — który penalizuje pomysły wymagające dużo pracy technicznej. Im mniejsza zależność od IT, tym szybciej możemy działać sami.</p>
+    <!-- POMYSŁY -->
+    <div id="view-ideas" class="view active">
+      <div class="filter-row" id="filter-row"></div>
+      <div id="ideas-list"><div class="loading">Wczytywanie pomysłów...</div></div>
     </div>
 
-    <div class="guide-section">
-      <h2>Cztery wymiary oceny</h2>
-      <div class="dim-cards">
-        <div class="dim-card">
-          <div class="dim-card-top"><h3>Impact</h3><span>Wpływ</span></div>
-          <div class="dim-card-body">
-            <p>Ile czasu/pracy zaoszczędzi ten skill w praktyce? Jak duży wpływ na wyniki klienta?</p>
-            <div class="scale-row">
-              <span class="scale-item s1">1 — minimalny</span>
-              <span class="scale-item s3">3 — średni</span>
-              <span class="scale-item s5">5 — przełomowy</span>
+    <!-- DODAJ -->
+    <div id="view-add" class="view">
+      <div id="add-success" style="display:none;" class="success-msg">Pomysł dodany! Przejdź do zakładki Pomysły i oceń go.</div>
+      <div class="form-card">
+        <div class="form-card-header"><h3>Nowy pomysł na skill / automatyzację</h3></div>
+        <div class="form-card-body">
+          <div class="field"><label>Nazwa skilla / pomysłu *</label><input id="f-title" placeholder="np. Content pruning — typowanie URL do usunięcia"/></div>
+          <div class="field"><label>Opis — co robi, jaki problem rozwiązuje</label><textarea id="f-desc" placeholder="Wklejasz listę URLi z danymi → skill klasyfikuje keep / prune / merge..."></textarea></div>
+          <div class="row2">
+            <div class="field"><label>Obszar</label>
+              <select id="f-area">
+                <option>Sprzedaż i wyceny</option><option>Raportowanie</option>
+                <option>Keyword research</option><option>On-page i treści</option>
+                <option>Audyt techniczny</option><option>Linkbuilding</option><option>Inne</option>
+              </select>
+            </div>
+            <div class="field"><label>Typ wdrożenia</label>
+              <select id="f-type">
+                <option>Skill Claude</option><option>Skrypt + Claude</option>
+                <option>Integracja API</option><option>Narzędzie zewnętrzne</option>
+              </select>
             </div>
           </div>
-        </div>
-        <div class="dim-card">
-          <div class="dim-card-top"><h3>Confidence</h3><span>Pewność</span></div>
-          <div class="dim-card-body">
-            <p>Jak bardzo wierzysz, że to zadziała zgodnie z założeniami? Czy widziałeś podobne rozwiązanie?</p>
-            <div class="scale-row">
-              <span class="scale-item s1">1 — duże ryzyko</span>
-              <span class="scale-item s3">3 — możliwe</span>
-              <span class="scale-item s5">5 — pewne</span>
-            </div>
-          </div>
-        </div>
-        <div class="dim-card">
-          <div class="dim-card-top"><h3>Ease</h3><span>Łatwość</span></div>
-          <div class="dim-card-body">
-            <p>Jak prosto to zbudować? Czy wymaga złożonej logiki, czy to prosty prompt?</p>
-            <div class="scale-row">
-              <span class="scale-item s1">1 — bardzo trudne</span>
-              <span class="scale-item s3">3 — umiarkowane</span>
-              <span class="scale-item s5">5 — banalne</span>
-            </div>
-          </div>
-        </div>
-        <div class="dim-card">
-          <div class="dim-card-top"><h3>IT Dep.</h3><span>Zależność od IT</span></div>
-          <div class="dim-card-body">
-            <p>Czy potrzebujemy dewelopera lub integracji? Im wyższa ocena — tym więcej IT, tym niżej w rankingu.</p>
-            <div class="scale-row">
-              <span class="scale-item s5">1 — brak IT</span>
-              <span class="scale-item s3">3 — trochę</span>
-              <span class="scale-item s1">5 — dużo IT</span>
-            </div>
-          </div>
+          <button class="btn-primary" onclick="addIdea()">Dodaj pomysł</button>
         </div>
       </div>
     </div>
 
-    <div class="guide-section">
-      <h2>Formuła ICE Score</h2>
-      <div class="formula-box">
-        <div class="formula">ICE = <span>Impact</span> × <span>Confidence</span> × (<span>Ease</span> − IT kara)</div>
-        <p>IT kara = (IT Dependency − 1) × 0,5 &nbsp;|&nbsp; Wynik końcowy zaokrąglony do 1 miejsca po przecinku</p>
-      </div>
-      <p>IT Dependency działa jako kara, a nie jako mnożnik — obniża wynik Ease, ale nie może go zepchnąć poniżej 0,1 (żeby nie zerować całkowicie). Pomysły z IT=1 (brak zależności) nie tracą nic.</p>
-
-      <table class="example-table">
-        <thead><tr><th>Pomysł</th><th>Impact</th><th>Confidence</th><th>Ease</th><th>IT Dep.</th><th>ICE Score</th></tr></thead>
-        <tbody>
-          <tr><td>Wycena SEO (czysty prompt)</td><td>4</td><td>5</td><td>5</td><td>1 (brak IT)</td><td class="score-green">100.0</td></tr>
-          <tr><td>Raport dla klienta</td><td>4</td><td>4</td><td>4</td><td>1 (brak IT)</td><td class="score-green">64.0</td></tr>
-          <tr><td>Analiza logów serwera</td><td>4</td><td>3</td><td>3</td><td>4 (dużo IT)</td><td class="score-red">18.0</td></tr>
-          <tr><td>Auto-redirect zaplecza</td><td>3</td><td>3</td><td>2</td><td>5 (wymaga serwera)</td><td class="score-red">4.5</td></tr>
-        </tbody>
-      </table>
-
-      <div class="tip-box">
-        <p><strong>Dlaczego kara za IT?</strong> Skille wymagające dewelopera lub integracji API mogą czekać tygodniami. Prosty prompt w Claude możemy zbudować dziś. Priorytetyzujemy to, co możemy faktycznie wdrożyć szybko.</p>
-      </div>
+    <!-- RANKING -->
+    <div id="view-ranking" class="view">
+      <div id="ranking-list"><div class="loading">Wczytywanie rankingu...</div></div>
     </div>
 
-    <div class="guide-section">
-      <h2>Jak działa nasz rytm pracy</h2>
-      <div class="rhythm-steps">
-        <div class="step">
-          <div class="step-num">01</div>
-          <h4>Dodajesz pomysł</h4>
-          <p>W zakładce "+ Dodaj pomysł" — kiedy tylko coś wpadnie Ci do głowy. Nie czekaj na spotkanie.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <h4>Każdy ocenia async</h4>
-          <p>Przed spotkaniem każdy wchodzi i ocenia pomysły w 4 wymiarach. Zajmuje to 5–10 minut.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <h4>Spotkanie (1×/miesiąc)</h4>
-          <p>Omawiamy tylko pozycje z dużą rozbieżnością ocen. Ranking jest gotowy — nie tracimy czasu na listowanie.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">04</div>
-          <h4>Top 1–2 do realizacji</h4>
-          <p>Wybieramy najwyżej ocenione skille i budujemy je w tym miesiącu. Reszta zostaje w backlogu.</p>
+    <!-- JAK TO DZIAŁA -->
+    <div id="view-guide" class="view">
+      <div class="guide-section">
+        <h2>Co to jest ICE scoring?</h2>
+        <p>ICE to prosty framework do priorytetyzacji pomysłów. Zamiast decydować "co robimy" na podstawie przeczucia — każdy ocenia każdy pomysł w trzech wymiarach. Wyniki agregują się w ranking, który służy jako punkt wyjścia do miesięcznej dyskusji.</p>
+        <p>Dodajemy czwarty wymiar — <strong>IT Dependency</strong> — który penalizuje pomysły wymagające dużo pracy technicznej.</p>
+      </div>
+      <div class="guide-section">
+        <h2>Cztery wymiary oceny</h2>
+        <div class="dim-cards">
+          <div class="dim-card"><div class="dim-card-top"><h3>Impact</h3><span>Wpływ</span></div><div class="dim-card-body"><p>Ile czasu zaoszczędzi ten skill w praktyce?</p><div class="scale-row"><span class="scale-item s1">1 — minimalny</span><span class="scale-item s3">3 — średni</span><span class="scale-item s5">5 — przełomowy</span></div></div></div>
+          <div class="dim-card"><div class="dim-card-top"><h3>Confidence</h3><span>Pewność</span></div><div class="dim-card-body"><p>Jak bardzo wierzysz, że to zadziała?</p><div class="scale-row"><span class="scale-item s1">1 — duże ryzyko</span><span class="scale-item s3">3 — możliwe</span><span class="scale-item s5">5 — pewne</span></div></div></div>
+          <div class="dim-card"><div class="dim-card-top"><h3>Ease</h3><span>Łatwość</span></div><div class="dim-card-body"><p>Jak prosto to zbudować?</p><div class="scale-row"><span class="scale-item s1">1 — bardzo trudne</span><span class="scale-item s3">3 — umiarkowane</span><span class="scale-item s5">5 — banalne</span></div></div></div>
+          <div class="dim-card"><div class="dim-card-top"><h3>IT Dep.</h3><span>Zależność od IT</span></div><div class="dim-card-body"><p>Im wyższa ocena — tym więcej IT, tym niżej w rankingu.</p><div class="scale-row"><span class="scale-item s5">1 — brak IT</span><span class="scale-item s3">3 — trochę</span><span class="scale-item s1">5 — dużo IT</span></div></div></div>
         </div>
       </div>
-
-      <div class="tip-box" style="margin-top:16px;">
-        <p><strong>Zasada rozbieżności:</strong> Jeśli najniższa i najwyższa ocena różnią się o więcej niż 2 punkty — to punkt do dyskusji na spotkaniu. Nie ma złych odpowiedzi, są tylko różne perspektywy warte rozmowy.</p>
+      <div class="guide-section">
+        <h2>Formuła ICE Score</h2>
+        <div class="formula-box">
+          <div class="formula">ICE = <span>Impact</span> × <span>Confidence</span> × (<span>Ease</span> − IT kara)</div>
+          <p>IT kara = (IT Dependency − 1) × 0,5 &nbsp;|&nbsp; Wynik zaokrąglony do 1 miejsca po przecinku</p>
+        </div>
+        <table class="example-table">
+          <thead><tr><th>Pomysł</th><th>Impact</th><th>Confidence</th><th>Ease</th><th>IT Dep.</th><th>ICE Score</th></tr></thead>
+          <tbody>
+            <tr><td>Wycena SEO (czysty prompt)</td><td>4</td><td>5</td><td>5</td><td>1</td><td class="score-green">100.0</td></tr>
+            <tr><td>Raport dla klienta</td><td>4</td><td>4</td><td>4</td><td>1</td><td class="score-green">64.0</td></tr>
+            <tr><td>Analiza logów serwera</td><td>4</td><td>3</td><td>3</td><td>4</td><td class="score-red">18.0</td></tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-
-    <div class="guide-section">
-      <h2>Często zadawane pytania</h2>
-      <div class="tip-box">
-        <p><strong>Czy muszę oceniać wszystkie pomysły?</strong> Nie — oceń te, które znasz wystarczająco dobrze. Pomysły z małą liczbą ocen są oznaczone w rankingu.</p>
-      </div>
-      <div class="tip-box">
-        <p><strong>Czy mogę zmienić ocenę?</strong> Tak — wpisz to samo imię i oceń ponownie. Nowa ocena nadpisuje poprzednią.</p>
-      </div>
-      <div class="tip-box">
-        <p><strong>Co z pomysłami spoza listy?</strong> Śmiało dodawaj przez zakładkę "+ Dodaj pomysł". Każdy pomysł jest wartościowy — nawet jeśli finalnie nie wejdzie do realizacji.</p>
+      <div class="guide-section">
+        <h2>Jak działa nasz rytm pracy</h2>
+        <div class="rhythm-steps">
+          <div class="step"><div class="step-num">01</div><h4>Dodajesz pomysł</h4><p>Kiedy tylko coś wpadnie Ci do głowy — nie czekaj na spotkanie.</p></div>
+          <div class="step"><div class="step-num">02</div><h4>Każdy ocenia async</h4><p>Przed spotkaniem każdy wchodzi i ocenia pomysły w 4 wymiarach. 5–10 minut.</p></div>
+          <div class="step"><div class="step-num">03</div><h4>Spotkanie (1×/miesiąc)</h4><p>Omawiamy tylko pozycje z dużą rozbieżnością ocen. Ranking jest gotowy.</p></div>
+          <div class="step"><div class="step-num">04</div><h4>Top 1–2 do realizacji</h4><p>Wybieramy najwyżej ocenione i budujemy w tym miesiącu.</p></div>
+        </div>
+        <div class="tip-box" style="margin-top:16px;"><p><strong>Zasada rozbieżności:</strong> Jeśli najniższa i najwyższa ocena różnią się o więcej niż 2 punkty — to punkt do dyskusji na spotkaniu.</p></div>
       </div>
     </div>
 
@@ -370,188 +314,191 @@ body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:1
 
 <script>
 // ─── KONFIGURACJA ─────────────────────────────────────────────
-// Po wdrożeniu Apps Script wklej tutaj URL Web App:
 const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/sempai.pl/s/AKfycby1hY2lAnTE23npTI32MC6c11N5Pc58eVD-QYqlPU__mdUwPbS9foyAq5uwVJ_McZPK/exec';
-// ──────────────────────────────────────────────────────────────
-const useSheets = APPS_SCRIPT_URL !== 'WKLEJ_TUTAJ_URL_APPS_SCRIPT';
+const ALLOWED_DOMAIN  = 'sempai.pl';
+const CLIENT_ID       = '372087545319-61b24o60no3jpmui9kkrfv05pvv1k7hr.apps.googleusercontent.com';
+// ─────────────────────────────────────────────────────────────
 
-const DIMS=[
-  {key:'impact',label:'Impact',hint:'Wpływ na oszczędność czasu'},
-  {key:'confidence',label:'Confidence',hint:'Pewność że zadziała'},
-  {key:'ease',label:'Ease',hint:'Łatwość wdrożenia'},
-  {key:'it',label:'IT dep.',hint:'Zależność od IT (wyżej = gorzej)',reverse:true}
+const DIMS = [
+  {key:'impact',     label:'Impact',     hint:'Wpływ na oszczędność czasu'},
+  {key:'confidence', label:'Confidence', hint:'Pewność że zadziała'},
+  {key:'ease',       label:'Ease',       hint:'Łatwość wdrożenia'},
+  {key:'it',         label:'IT dep.',    hint:'Zależność od IT (wyżej = gorzej)', reverse:true}
 ];
-let ideas=[];
-let activeFilter='Wszystkie';
-const pendingScores={};
-const STORAGE_KEY='sempai-ice-ideas-v3';
+
+let ideas        = [];
+let currentUser  = null; // {name, email, picture}
+let activeFilter = 'Wszystkie';
+const pendingScores = {};
+
+// ─── GOOGLE AUTH ──────────────────────────────────────────────
+function handleCredentialResponse(response) {
+  const payload = parseJwt(response.credential);
+  const email   = payload.email || '';
+
+  if (!email.endsWith('@' + ALLOWED_DOMAIN)) {
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+
+  currentUser = {
+    name:    payload.name || email.split('@')[0],
+    email:   email,
+    picture: payload.picture || ''
+  };
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display   = 'block';
+  document.getElementById('user-name-display').textContent = currentUser.name;
+
+  if (currentUser.picture) {
+    const av = document.getElementById('user-avatar');
+    av.src = currentUser.picture;
+    av.style.display = 'block';
+  }
+
+  init();
+}
+
+function parseJwt(token) {
+  const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+  return JSON.parse(atob(base64));
+}
+
+function logout() {
+  google.accounts.id.disableAutoSelect();
+  currentUser = null;
+  document.getElementById('app-screen').style.display   = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-error').style.display  = 'none';
+}
+
+// ─── BANNER ───────────────────────────────────────────────────
+function showBanner(msg, type) {
+  let b = document.getElementById('sync-banner');
+  if (!b) {
+    b = document.createElement('div');
+    b.id = 'sync-banner';
+    b.style.cssText = 'position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:700;z-index:999;transition:opacity 0.3s;font-family:Arial,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,0.15);';
+    document.body.appendChild(b);
+  }
+  b.style.opacity = '1';
+  b.textContent   = msg;
+  b.style.background = type==='ok' ? '#3da546' : type==='err' ? '#c0392b' : '#151b3a';
+  b.style.color = '#fff';
+}
+function hideBanner() {
+  const b = document.getElementById('sync-banner');
+  if (b) b.style.opacity = '0';
+}
 
 // ─── SHEETS API ───────────────────────────────────────────────
-async function sheetsGetIdeas(){
-  try{
-    const r=await fetch(APPS_SCRIPT_URL+'?action=getIdeas',{method:'GET'});
-    if(!r.ok) return null;
-    const d=await r.json();
-    return Array.isArray(d.ideas)?d.ideas:null;
-  }catch(e){return null;}
+async function sheetsGetIdeas() {
+  try {
+    const r = await fetch(APPS_SCRIPT_URL + '?action=getIdeas');
+    if (!r.ok) return null;
+    const d = await r.json();
+    return Array.isArray(d.ideas) ? d.ideas : null;
+  } catch(e) { return null; }
 }
 
-async function sheetsAddIdea(idea){
-  if(!useSheets) return;
-  try{
-    await fetch(APPS_SCRIPT_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({action:'addIdea',idea})
+async function sheetsAddIdea(idea) {
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify({action:'addIdea', idea})
     });
-  }catch(e){}
+  } catch(e) {}
 }
 
-async function sheetsAddVote(idea, scores){
-  if(!useSheets) return;
-  try{
-    const avg=getAvgScores(idea);
-    await fetch(APPS_SCRIPT_URL,{
-      method:'POST',
-      headers:{'Content-Type':'text/plain'},
-      body:JSON.stringify({
-        action:'addVote',
-        ideaId:idea.id,
-        ideaTitle:idea.title,
-        ideaArea:idea.area,
-        ideaType:idea.type,
+async function sheetsAddVote(idea, scores) {
+  try {
+    const avg = getAvgScores(idea);
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify({
+        action:    'addVote',
+        ideaId:    idea.id,
+        ideaTitle: idea.title,
+        ideaArea:  idea.area,
+        ideaType:  idea.type,
         scores,
-        newAvg: avg ? {impact:avg.impact,confidence:avg.confidence,ease:avg.ease,it:avg.it,total:avg.total,voters:avg.voters} : null
+        newAvg: avg ? {impact:avg.impact, confidence:avg.confidence, ease:avg.ease, it:avg.it, total:avg.total, voters:avg.voters} : null
       })
     });
-  }catch(e){}
-}
-// ──────────────────────────────────────────────────────────────
-
-function getSeedIdeas(){
-  const t=Date.now();
-  return [
-    // SPRZEDAŻ I WYCENY
-    {id:'s01',title:'Wycena SEO',desc:'Brief klienta → gotowy dokument wyceny z zakresem i uzasadnieniem. Bez ręcznego szacowania każdej pozycji.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-26000},
-    {id:'s02',title:'Estymacje SEO',desc:'URL + frazy + cel → realistyczna prognoza ruchu, pozycji i czasu do efektów z gotowym uzasadnieniem dla klienta.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-25000},
-    {id:'s03',title:'Odpowiedź na brief klienta',desc:'Brief klienta → propozycja strategii SEO gotowa do wysłania. Struktura, zakres, podejście — bez pisania od zera.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-24000},
-
-    // RAPORTOWANIE
-    {id:'s04',title:'Raport miesięczny dla klienta',desc:'Dane z GSC/Ahrefs → narracja bez SEO-żargonu, gotowa do wysłania. Co się stało, dlaczego, co robimy dalej.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-23000},
-    {id:'s05',title:'Odpowiedzi na e-maile i Asanę',desc:'Wiadomość od klienta → gotowa odpowiedź w tonie agencji. Działa też dla pytań o status prac z Asany.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-22000},
-    {id:'s06',title:'Wyjaśnienie spadku widoczności',desc:'Dane + daty zdarzeń → diagnoza przyczyny spadku i gotowy komentarz zrozumiały dla klienta. Bez godzin analizy.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-21000},
-
-    // KEYWORD RESEARCH I CONTENT
-    {id:'s07',title:'Content plan z fraz kluczowych',desc:'Lista fraz → klastry tematyczne + tytuły artykułów + kolejność publikacji + intencje. Gotowy content plan.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-20000},
-    {id:'s08',title:'Brief dla copywritera',desc:'Fraza + SERP → gotowy brief z H1, propozycjami nagłówków, sekcją FAQ i intencją. Bez godziny analizy SERP.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-19000},
-    {id:'s09',title:'FAQ z People Also Ask',desc:'Pytania z sekcji PAA dla danej grupy fraz → gotowa sekcja FAQ w formacie Featured Snippet, krótko i definicyjnie.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-18000},
-
-    // ON-PAGE I TREŚCI
-    {id:'s10',title:'Optymalizacja meta tagów (batch)',desc:'Lista URLi z obecnymi meta tagami + frazy → poprawione title i description dla każdego URL, gotowe do wdrożenia.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-17000},
-    {id:'s11',title:'Content refresh — recykling treści',desc:'Stary artykuł + aktualne frazy/SERP → lista co zdezaktualizować, jakie sekcje dopisać, jakie usunąć.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-16000},
-    {id:'s12',title:'Content pruning — typowanie URL do usunięcia',desc:'Lista URLi + dane (ruch, pozycje, daty) + site focus/radius → klasyfikacja keep/prune/merge z uzasadnieniem.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-15000},
-    {id:'s13',title:'Deduplikacja treści',desc:'Lista artykułów → wykrycie par/grup o nakładających się intencjach. Rekomendacja co scalić lub przekierować.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-14000},
-    {id:'s14',title:'Dane strukturalne JSON-LD',desc:'Treść strony lub opis produktu → gotowy JSON-LD Schema (Article, FAQ, Product, BreadcrumbList) do wdrożenia.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-13000},
-    {id:'s15',title:'Linkowanie wewnętrzne — propozycje',desc:'Lista URLi + treść artykułów → propozycje anchor textów i powiązań między podstronami.',area:'On-page i treści',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-12000},
-    {id:'s16',title:'Content audit report',desc:'Zbiorcze zestawienie wyników content auditu: co zmienić, co dodać, co usunąć. Gotowy raport dla klienta lub PM.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-11000},
-
-    // AUDYT TECHNICZNY
-    {id:'s17',title:'Wykrywanie podstron wymagających uwagi',desc:'Eksport GSC + Ahrefs → lista podstron z kanibalizacją, thin content, słabym CTR, wolnym ładowaniem lub tendencją spadkową.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-10000},
-    {id:'s18',title:'Masowe sprawdzenie zaplecza',desc:'Wyniki crawlu domen → diagnoza błędów: blank pages, kody odpowiedzi, potencjalne włamania. Claude analizuje, skrypt zbiera.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-9000},
-    {id:'s19',title:'Status indeksacji URLi',desc:'Eksport Coverage z GSC → diagnoza problemów z indeksacją, grupowanie według przyczyn, rekomendacje działań.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-8000},
-    {id:'s20',title:'Wykrywanie niekorzystnych schematów w URLach',desc:'Dane historyczne z GSC/Ahrefs → trendy: sekcje tracące widoczność, spadek indeksacji, anomalie w grupach URLi.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-7000},
-    {id:'s21',title:'Checklist pre-audytu',desc:'URL klienta → szybka lista potencjalnych problemów technicznych jako punkt wyjścia do pełnego audytu.',area:'Audyt techniczny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-6000},
-
-    // LINKBUILDING
-    {id:'s22',title:'Dobór URLi do linkowania w danym miesiącu',desc:'Dane pozycji z GSC → lista podstron bliskich top3/top10 które warto wesprzeć linkami w tym miesiącu.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-5000},
-    {id:'s23',title:'Treść pod zaplecze z naturalnym linkiem',desc:'Fraza + URL docelowy → artykuł z naturalnie wplecionym linkiem do podstrony klienta, gotowy do publikacji.',area:'Linkbuilding',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-4000},
-    {id:'s24',title:'Analiza i porządkowanie arkusza zaplecza',desc:'Arkusz domen zaplecza → sprawdzenie aktywności domen, wykrycie niedziałających, porządkowanie listy.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-3000},
-    {id:'s25',title:'Reguły redirect dla wpisów zaplecza',desc:'Lista domen + URLi nieaktualnych klientów → gotowe reguły 301 w formacie .htaccess lub Nginx do wdrożenia.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-2000},
-  ];
+  } catch(e) {}
 }
 
-function showBanner(msg,type){
-  let b=document.getElementById('sync-banner');
-  if(!b){b=document.createElement('div');b.id='sync-banner';b.style.cssText='position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:700;z-index:999;transition:opacity 0.3s;font-family:Arial,sans-serif;';document.body.appendChild(b);}
-  b.style.opacity='1';b.textContent=msg;
-  if(type==='ok'){b.style.background='#3da546';b.style.color='#fff';}
-  else if(type==='err'){b.style.background='#c0392b';b.style.color='#fff';}
-  else{b.style.background='#151b3a';b.style.color='#fff';}
-}
-function hideBanner(){const b=document.getElementById('sync-banner');if(b){b.style.opacity='0';}}
-
-async function load(){
-  showBanner('Wczytywanie danych...','info');
-  if(useSheets){
-    const remote=await sheetsGetIdeas();
-    if(remote&&remote.length){
-      ideas=remote;
-      hideBanner();renderAll();updateLastUpdated();return;
-    }
+// ─── INIT & LOAD ──────────────────────────────────────────────
+async function init() {
+  showBanner('Wczytywanie danych...', 'info');
+  const remote = await sheetsGetIdeas();
+  if (remote && remote.length) {
+    ideas = remote;
+  } else {
+    ideas = getSeedIdeas();
   }
-  try{
-    const r=await window.storage.get(STORAGE_KEY,true);
-    ideas=r?JSON.parse(r.value):getSeedIdeas();
-  }catch(e){ideas=getSeedIdeas();}
-  hideBanner();renderAll();updateLastUpdated();
+  hideBanner();
+  renderAll();
 }
 
-async function save(){
-  try{await window.storage.set(STORAGE_KEY,JSON.stringify(ideas),true);}catch(e){}
-  updateLastUpdated();
-}
+function genId() { return 'i' + Date.now() + Math.random().toString(36).slice(2,6); }
 
-function updateLastUpdated(){
-  const el=document.getElementById('last-updated');
-  if(el) el.textContent='Pomyslow: '+ideas.length+(useSheets?' · Sheets':'');
-}
-
-function genId(){return 'i'+Date.now()+Math.random().toString(36).slice(2,6);}
-
-function getAvgScores(idea){
-  const voters=Object.values(idea.votes||{});
-  if(!voters.length)return null;
-  const avg={};
-  DIMS.forEach(d=>{
-    const vals=voters.map(v=>v[d.key]).filter(x=>x>0);
-    avg[d.key]=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+// ─── ICE SCORE ────────────────────────────────────────────────
+function getAvgScores(idea) {
+  const voters = Object.values(idea.votes || {});
+  if (!voters.length) return null;
+  const avg = {};
+  DIMS.forEach(d => {
+    const vals = voters.map(v => v[d.key]).filter(x => x > 0);
+    avg[d.key] = vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : 0;
   });
-  const itPenalty=avg.it?(avg.it-1)*0.5:0;
-  const effectiveEase=Math.max(0.1,(avg.ease||0)-itPenalty);
-  avg.total=Math.round((avg.impact||0)*(avg.confidence||0)*effectiveEase*10)/10;
-  avg.voters=voters.length;
+  const itPenalty    = avg.it ? (avg.it - 1) * 0.5 : 0;
+  const effectiveEase = Math.max(0.1, (avg.ease || 0) - itPenalty);
+  avg.total  = Math.round((avg.impact||0) * (avg.confidence||0) * effectiveEase * 10) / 10;
+  avg.voters = voters.length;
   return avg;
 }
 
-function renderAll(){
+// ─── RENDER ───────────────────────────────────────────────────
+function renderAll() {
   renderFilters();
   renderIdeas();
-  if(document.getElementById('view-ranking').classList.contains('active'))renderRanking();
+  const el = document.getElementById('last-updated');
+  if (el) el.textContent = '';
 }
 
-function renderFilters(){
-  const areas=['Wszystkie',...new Set(ideas.map(i=>i.area))];
-  document.getElementById('filter-row').innerHTML=areas.map(a=>
+function renderFilters() {
+  const areas = ['Wszystkie', ...new Set(ideas.map(i => i.area))];
+  document.getElementById('filter-row').innerHTML = areas.map(a =>
     `<div class="filter-chip${a===activeFilter?' active':''}" onclick="setFilter('${a}')">${a}</div>`
   ).join('');
 }
 
-function setFilter(a){activeFilter=a;renderFilters();renderIdeas();}
+function setFilter(a) { activeFilter = a; renderFilters(); renderIdeas(); }
 
-function renderIdeas(){
-  const list=document.getElementById('ideas-list');
-  const filtered=activeFilter==='Wszystkie'?ideas:ideas.filter(i=>i.area===activeFilter);
-  if(!filtered.length){list.innerHTML='<div class="empty-state">Brak pomysłów w tej kategorii. Dodaj pierwszy!</div>';return;}
-  list.innerHTML=filtered.map(ideaCardHtml).join('');
+function renderIdeas() {
+  const list     = document.getElementById('ideas-list');
+  const filtered = activeFilter === 'Wszystkie' ? ideas : ideas.filter(i => i.area === activeFilter);
+  if (!filtered.length) { list.innerHTML = '<div class="empty-state">Brak pomysłów. Dodaj pierwszy!</div>'; return; }
+  list.innerHTML = filtered.map(ideaCardHtml).join('');
 }
 
-function ideaCardHtml(idea){
-  const s=getAvgScores(idea);
-  let scoresHtml='';
-  if(s){
-    scoresHtml=`
+function hasVoted(idea) {
+  return currentUser && idea.votes && idea.votes[currentUser.email];
+}
+
+function ideaCardHtml(idea) {
+  const s      = getAvgScores(idea);
+  const voted  = hasVoted(idea);
+
+  let scoresHtml = '';
+  if (s) {
+    scoresHtml = `
       <div class="scores-grid">
-        ${DIMS.map(d=>`
+        ${DIMS.map(d => `
           <div class="score-cell">
             <span class="score-label">${d.label}</span>
             <span class="score-num${d.key==='it'&&s[d.key]>2.5?' red':' green'}">${s[d.key].toFixed(1)}</span>
@@ -565,8 +512,25 @@ function ideaCardHtml(idea){
         <span class="score-total-val">${s.total}</span>
       </div>`;
   } else {
-    scoresHtml=`<div class="no-scores">Brak ocen — bądź pierwszy!</div>`;
+    scoresHtml = `<div class="no-scores">Brak ocen — bądź pierwszy!</div>`;
   }
+
+  const voteSection = voted
+    ? `<div class="vote-section"><p class="already-voted">✓ Twoja ocena została zapisana</p></div>`
+    : `<div class="vote-section">
+        <p class="vote-title">Twoja ocena (1–5)</p>
+        ${DIMS.map(d => `
+          <div class="vote-row">
+            <span class="vote-dim">${d.label}</span>
+            <div class="stars-row" id="stars-${idea.id}-${d.key}">
+              ${[1,2,3,4,5].map(n => `<div class="star-btn" data-val="${n}" onclick="setScore('${idea.id}','${d.key}',${n},this)">${n}</div>`).join('')}
+            </div>
+          </div>`).join('')}
+        <div class="vote-actions">
+          <button class="btn-sm" onclick="submitVote('${idea.id}')">Zapisz ocenę</button>
+        </div>
+      </div>`;
+
   return `<div class="idea-card">
     <div class="idea-card-header">
       <p class="idea-title">${idea.title}</p>
@@ -575,120 +539,136 @@ function ideaCardHtml(idea){
         <span class="tag tag-area">${idea.area}</span>
         <span class="tag tag-type">${idea.type}</span>
         <span class="tag tag-by">dodał: ${idea.author}</span>
+        ${voted ? '<span class="tag tag-voted">✓ oceniono</span>' : ''}
       </div>
     </div>
     ${scoresHtml}
-    <div class="vote-section">
-      <p class="vote-title">Twoja ocena (1–5)</p>
-      ${DIMS.map(d=>`
-        <div class="vote-row">
-          <span class="vote-dim">${d.label}</span>
-          <div class="stars-row" id="stars-${idea.id}-${d.key}">
-            ${[1,2,3,4,5].map(n=>`<div class="star-btn" data-val="${n}" onclick="setScore('${idea.id}','${d.key}',${n},this)">${n}</div>`).join('')}
-          </div>
-        </div>`).join('')}
-      <div class="vote-actions">
-        <input class="voter-inp" id="vname-${idea.id}" placeholder="Twoje imię..."/>
-        <button class="btn-sm" onclick="submitVote('${idea.id}')">Zapisz ocenę</button>
-      </div>
-    </div>
+    ${voteSection}
   </div>`;
 }
 
-function setScore(ideaId,dim,val){
-  if(!pendingScores[ideaId])pendingScores[ideaId]={};
-  pendingScores[ideaId][dim]=val;
-  const isIt=dim==='it';
-  document.querySelectorAll(`#stars-${ideaId}-${dim} .star-btn`).forEach(b=>{
-    const active=parseInt(b.dataset.val)<=val;
-    b.classList.toggle('sel',active&&!isIt);
-    b.classList.toggle('sel-it',active&&isIt);
+// ─── VOTE ─────────────────────────────────────────────────────
+function setScore(ideaId, dim, val) {
+  if (!pendingScores[ideaId]) pendingScores[ideaId] = {};
+  pendingScores[ideaId][dim] = val;
+  const isIt = dim === 'it';
+  document.querySelectorAll(`#stars-${ideaId}-${dim} .star-btn`).forEach(b => {
+    const active = parseInt(b.dataset.val) <= val;
+    b.classList.toggle('sel',    active && !isIt);
+    b.classList.toggle('sel-it', active && isIt);
   });
 }
 
-async function submitVote(ideaId){
-  const nameEl=document.getElementById('vname-'+ideaId);
-  const name=nameEl?.value?.trim();
-  if(!name){alert('Wpisz swoje imię przed zapisaniem oceny.');return;}
-  const scores=pendingScores[ideaId];
-  if(!scores||Object.keys(scores).length<4){alert('Oceń wszystkie 4 wymiary przed zapisaniem.');return;}
-  const idea=ideas.find(i=>i.id===ideaId);
-  if(!idea)return;
-  if(!idea.votes)idea.votes={};
-  idea.votes[name]={...scores};
-  await save();
-  showBanner('Zapisywanie do Sheets...','info');
+async function submitVote(ideaId) {
+  if (!currentUser) return;
+  const scores = pendingScores[ideaId];
+  if (!scores || Object.keys(scores).length < 4) { alert('Oceń wszystkie 4 wymiary przed zapisaniem.'); return; }
+  const idea = ideas.find(i => i.id === ideaId);
+  if (!idea) return;
+  if (!idea.votes) idea.votes = {};
+  idea.votes[currentUser.email] = {...scores};
+  showBanner('Zapisywanie oceny...', 'info');
   await sheetsAddVote(idea, scores);
-  hideBanner();showBanner('Ocena zapisana!','ok');
-  setTimeout(hideBanner,2500);
+  hideBanner();
+  showBanner('Ocena zapisana!', 'ok');
+  setTimeout(hideBanner, 2500);
   renderAll();
 }
 
-async function addIdea(){
-  const title=document.getElementById('f-title').value.trim();
-  const author=document.getElementById('f-author').value.trim();
-  if(!title||!author){alert('Wypełnij imię i nazwę skilla.');return;}
-  const newIdea={
-    id:genId(),title,
-    desc:document.getElementById('f-desc').value.trim()||'Brak opisu.',
-    area:document.getElementById('f-area').value,
-    type:document.getElementById('f-type').value,
-    author,votes:{},ts:Date.now()
+// ─── ADD IDEA ─────────────────────────────────────────────────
+async function addIdea() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { alert('Wpisz nazwę skilla.'); return; }
+  const newIdea = {
+    id:     genId(),
+    title,
+    desc:   document.getElementById('f-desc').value.trim() || 'Brak opisu.',
+    area:   document.getElementById('f-area').value,
+    type:   document.getElementById('f-type').value,
+    author: currentUser ? currentUser.name : 'Nieznany',
+    votes:  {},
+    ts:     Date.now()
   };
   ideas.unshift(newIdea);
-  await save();
-  showBanner('Zapisywanie do Sheets...','info');
+  showBanner('Zapisywanie do Sheets...', 'info');
   await sheetsAddIdea(newIdea);
-  hideBanner();showBanner('Pomysł dodany!','ok');
-  setTimeout(hideBanner,2500);
-  ['f-title','f-desc','f-author'].forEach(id=>{document.getElementById(id).value='';});
-  const msg=document.getElementById('add-success');
-  msg.style.display='block';
-  setTimeout(()=>{msg.style.display='none';},4000);
+  hideBanner();
+  showBanner('Pomysł dodany!', 'ok');
+  setTimeout(hideBanner, 2500);
+  ['f-title','f-desc'].forEach(id => { document.getElementById(id).value = ''; });
+  const msg = document.getElementById('add-success');
+  msg.style.display = 'block';
+  setTimeout(() => { msg.style.display = 'none'; }, 4000);
+  switchTab('ideas');
   renderAll();
 }
 
-function renderRanking(){
-  const list=document.getElementById('ranking-list');
-  const scored=ideas.map(i=>({...i,s:getAvgScores(i)})).filter(i=>i.s).sort((a,b)=>b.s.total-a.s.total);
-  const unscored=ideas.filter(i=>!getAvgScores(i));
-  if(!scored.length&&!unscored.length){list.innerHTML='<div class="empty-state">Brak pomysłów jeszcze. Dodaj i oceń!</div>';return;}
-  const maxScore=scored[0]?.s?.total||1;
-  let html=scored.map((idea,i)=>{
-    const pct=Math.round((idea.s.total/Math.max(maxScore,1))*100);
+// ─── RANKING ──────────────────────────────────────────────────
+function renderRanking() {
+  const list     = document.getElementById('ranking-list');
+  const scored   = ideas.map(i => ({...i, s:getAvgScores(i)})).filter(i => i.s).sort((a,b) => b.s.total - a.s.total);
+  const unscored = ideas.filter(i => !getAvgScores(i));
+  if (!scored.length && !unscored.length) { list.innerHTML = '<div class="empty-state">Brak pomysłów jeszcze.</div>'; return; }
+  const maxScore = scored[0]?.s?.total || 1;
+  let html = scored.map((idea, i) => {
+    const pct = Math.round((idea.s.total / Math.max(maxScore, 1)) * 100);
     return `<div class="rank-card">
       <div class="rank-num${i<3?' podium':''}">${i+1}</div>
-      <div>
-        <div class="rank-title">${idea.title}</div>
-        <div class="rank-sub">${idea.area} &middot; ${idea.type} &middot; ${idea.s.voters} ocen &middot; IT: ${idea.s.it.toFixed(1)}</div>
-      </div>
-      <div class="rank-score-wrap">
-        <span class="rank-score">${idea.s.total}</span>
-        <span class="rank-score-label">ICE score</span>
-      </div>
+      <div><div class="rank-title">${idea.title}</div><div class="rank-sub">${idea.area} · ${idea.type} · ${idea.s.voters} ocen · IT: ${idea.s.it.toFixed(1)}</div></div>
+      <div class="rank-score-wrap"><span class="rank-score">${idea.s.total}</span><span class="rank-score-label">ICE score</span></div>
       <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
     </div>`;
   }).join('');
-  if(unscored.length){
-    html+=`<div class="section-label">Bez ocen jeszcze — ${unscored.length} pomysł${unscored.length===1?'':'ów'}</div>`;
-    html+=unscored.map(i=>`<div class="rank-card rank-unscored">
+  if (unscored.length) {
+    html += `<div class="section-label">Bez ocen (${unscored.length})</div>`;
+    html += unscored.map(i => `<div class="rank-card rank-unscored">
       <div class="rank-num">–</div>
-      <div><div class="rank-title">${i.title}</div><div class="rank-sub">${i.area} &middot; dodał: ${i.author}</div></div>
+      <div><div class="rank-title">${i.title}</div><div class="rank-sub">${i.area}</div></div>
       <div class="rank-score-wrap"><span class="rank-score" style="color:var(--border);">?</span><span class="rank-score-label">brak ocen</span></div>
       <div class="bar-wrap"><div class="bar-fill" style="width:0%"></div></div>
     </div>`).join('');
   }
-  list.innerHTML=html;
+  list.innerHTML = html;
 }
 
-function switchTab(t){
-  document.querySelectorAll('.tab').forEach((el,i)=>el.classList.toggle('active',['ideas','add','ranking','guide'][i]===t));
-  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
-  document.getElementById('view-'+t).classList.add('active');
-  if(t==='ranking')renderRanking();
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach((el,i) => el.classList.toggle('active', ['ideas','add','ranking','guide'][i] === t));
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + t).classList.add('active');
+  if (t === 'ranking') renderRanking();
 }
 
-load();
+// ─── SEED IDEAS ───────────────────────────────────────────────
+function getSeedIdeas() {
+  const t = Date.now();
+  return [
+    {id:'s01',title:'Wycena SEO',desc:'Brief klienta → gotowy dokument wyceny z zakresem i uzasadnieniem.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-26000},
+    {id:'s02',title:'Estymacje SEO',desc:'URL + frazy + cel → realistyczna prognoza ruchu, pozycji i czasu do efektów.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-25000},
+    {id:'s03',title:'Odpowiedź na brief klienta',desc:'Brief klienta → propozycja strategii SEO gotowa do wysłania.',area:'Sprzedaż i wyceny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-24000},
+    {id:'s04',title:'Raport miesięczny dla klienta',desc:'Dane z GSC/Ahrefs → narracja bez SEO-żargonu, gotowa do wysłania.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-23000},
+    {id:'s05',title:'Odpowiedzi na e-maile i Asanę',desc:'Wiadomość od klienta → gotowa odpowiedź w tonie agencji.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-22000},
+    {id:'s06',title:'Wyjaśnienie spadku widoczności',desc:'Dane + daty zdarzeń → diagnoza przyczyny spadku i gotowy komentarz.',area:'Raportowanie',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-21000},
+    {id:'s07',title:'Content plan z fraz kluczowych',desc:'Lista fraz → klastry tematyczne + tytuły artykułów + kolejność publikacji.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-20000},
+    {id:'s08',title:'Brief dla copywritera',desc:'Fraza + SERP → gotowy brief z H1, nagłówkami, sekcją FAQ i intencją.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-19000},
+    {id:'s09',title:'FAQ z People Also Ask',desc:'Pytania z sekcji PAA → gotowa sekcja FAQ w formacie Featured Snippet.',area:'Keyword research',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-18000},
+    {id:'s10',title:'Optymalizacja meta tagów (batch)',desc:'Lista URLi + frazy → poprawione title i description dla każdego URL.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-17000},
+    {id:'s11',title:'Content refresh',desc:'Stary artykuł + aktualne frazy/SERP → lista co zdezaktualizować.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-16000},
+    {id:'s12',title:'Content pruning',desc:'Lista URLi + dane + site focus → klasyfikacja keep/prune/merge.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-15000},
+    {id:'s13',title:'Deduplikacja treści',desc:'Lista artykułów → wykrycie par o nakładających się intencjach.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-14000},
+    {id:'s14',title:'Dane strukturalne JSON-LD',desc:'Treść strony → gotowy JSON-LD Schema do wdrożenia.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-13000},
+    {id:'s15',title:'Linkowanie wewnętrzne',desc:'Lista URLi + treść → propozycje anchor textów i powiązań.',area:'On-page i treści',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-12000},
+    {id:'s16',title:'Content audit report',desc:'Zbiorcze zestawienie: co zmienić, co dodać, co usunąć.',area:'On-page i treści',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-11000},
+    {id:'s17',title:'Wykrywanie podstron wymagających uwagi',desc:'GSC + Ahrefs → lista podstron z kanibalizacją, thin content, słabym CTR.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-10000},
+    {id:'s18',title:'Masowe sprawdzenie zaplecza',desc:'Wyniki crawlu domen → diagnoza błędów i potencjalnych włamań.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-9000},
+    {id:'s19',title:'Status indeksacji URLi',desc:'Eksport Coverage z GSC → diagnoza problemów z indeksacją.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-8000},
+    {id:'s20',title:'Wykrywanie niekorzystnych schematów',desc:'Dane historyczne GSC/Ahrefs → trendy i anomalie w grupach URLi.',area:'Audyt techniczny',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-7000},
+    {id:'s21',title:'Checklist pre-audytu',desc:'URL klienta → szybka lista potencjalnych problemów technicznych.',area:'Audyt techniczny',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-6000},
+    {id:'s22',title:'Dobór URLi do linkowania',desc:'Dane pozycji z GSC → lista podstron bliskich top3/top10.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-5000},
+    {id:'s23',title:'Treść pod zaplecze',desc:'Fraza + URL docelowy → artykuł z naturalnym linkiem.',area:'Linkbuilding',type:'Skill Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-4000},
+    {id:'s24',title:'Analiza arkusza zaplecza',desc:'Arkusz domen → aktywność, niedziałające domeny, porządkowanie.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-3000},
+    {id:'s25',title:'Reguły redirect dla zaplecza',desc:'Lista domen + URLi → gotowe reguły 301 w formacie .htaccess.',area:'Linkbuilding',type:'Skrypt + Claude',author:'Rozmowa warsztatowa',votes:{},ts:t-2000},
+  ];
+}
 </script>
 </body>
 </html>
